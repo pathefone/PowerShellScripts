@@ -27,15 +27,15 @@ Function FilterProcess {
         Get-Process | Where-Object { $_.HANDLES -lt $parameter }
         $fileNameDate = Get-Date -Format "yyyyMMDD_HHmmss"
 
-        $fileCount = ( Get-ChildItem $HOME\logs | Measure-Object ).Count;
+        $fileCount = ( Get-ChildItem .\logs | Measure-Object ).Count;
 
         #deleting oldest log file
         if($fileCount -eq 5) {
-            Get-ChildItem $HOME\logs | Sort CreationTime | Select -First 1 | Remove-Item
+            Get-ChildItem .\logs | Sort CreationTime | Select -First 1 | Remove-Item
         }
 
         Get-Process | Where-Object { $_.HANDLES -gt $parameter } | Format-Table Handles, Name, Id -AutoSize | `
-        Out-File -FilePath $HOME\logs\FilteredProcessList_$fileNameDate.csv
+        Out-File -FilePath .\logs\FilteredProcessList_$fileNameDate.csv
 
         Start-Sleep -Seconds 30
         Write-Host "*Updating..*" -ForegroundColor Yellow
